@@ -1412,9 +1412,64 @@ It is important to standardize the logs to have a common way to parse most of th
 }
 ```
 
+#### 3.2.8.2 K8S Health Checks and Metrics
+
+We are not going to go deep on this matter as this is basic when developing an application for kubernetes. It is a must to [Setting Up health checks](https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-setting-up-health-checks-with-readiness-and-liveness-probes).
+
 ### 3.2.9 Section _7_. Event-Driven autoscaling - KEDA
 
-**KEDA** (Kubernetes-based Event-driven Autoscaling) is an open source component developed by Microsoft and Red Hat to allow any Kubernetes workload to benefit from the event-driven architecture model. 
+In Kubernetes, scaling replicas is as easy as running:
+
+```bash
+kubectl scale deployments/kubernetes-app --replicas=4
+```
+
+or:
+
+```yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+spec:
+  replicas: 3
+```
+
+but, this is a manual process.
+
+The automated way can be performed by using Horizontal Pod Autoscaler. For instance:
+
+```bash
+kubectl autoscale rs myreplicaset --min=2 --max=5 --cpu-percent=80
+```
+
+will create an autoscaler for replication set foo, with target CPU utilization set to 80% and the number of replicas between 2 and 5. Kubernetes 1.6 adds support for making use of custom metrics in the Horizontal Pod Autoscaler.
+
+Instead of using the Horizontal Pod Autoscaler directly, we will use **KEDA** (Kubernetes-based Event-driven Autoscaling), an open source component developed by Microsoft and Red Hat to allow any Kubernetes workload to benefit from the event-driven architecture model. It integrates natively with the Horizontal Pod Autoscaler. *KEDA* can use *Prometheus* that will be in charge of getting metrics and other [scalers](https://keda.sh/docs/1.5/scalers/) like GCP Pub/sub, Redis or external sources.
+
+KEDA can be deployed as an [operator](https://operatorhub.io/operator/keda). The manifest to autoscale the application can be like:
+
+```yaml
+apiVersion: keda.k8s.io/v1alpha1
+kind: ScaledObject
+metadata:
+  name: myapp
+  namespace: default
+  labels:
+    deploymentName: myapp
+spec:
+  scaleTargetRef:
+    deploymentName: myapp
+  pollingInterval: 15
+  cooldownPeriod:  30
+  minReplicaCount: 1
+  maxReplicaCount: 10
+  triggers:
+  - type: prometheus
+    metadata:
+      serverAddress: http://prometheus:9090
+      metricName: access_frequency
+      threshold: '3'
+      query: sum(rate(http_requests[2m]))
+```
 
 ## 4. Project Strategy
 
