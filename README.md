@@ -258,10 +258,9 @@ The solution will be very generic and focused on **GCP** as the default Cloud pr
 #### 2.2.1 Assumptions
 
 1. Use Git for code repository with **GitHub** as provider.
-2. Use **CircleCI** as CI solution.
-3. Use of **Terraform** for infrastructure deployment as the default and **Ansible** for orchestration, configuration and K8s Operators.
-4. Use of **Bash**, **Python**, **Ruby** and **Go** as coding languages.
-5. Use of VSCode as default IDE.
+2. Use of **Terraform** for infrastructure deployment as the default and **Ansible** for orchestration, configuration and K8s Operators.
+3. Use of **Bash**, **Python**, **Ruby** and **Go** as coding languages.
+4. Use of VSCode as default IDE.
 
 #### 2.2.2 Constraints
 
@@ -272,7 +271,6 @@ No constraints have been detected so far.
 The current implementation is dependent on the following technologies and providers among others:
 
 - Google Cloud Platform
-- CircleCI
 - GitHub
 - Pre-Commit
 - Kubernetes (GKS)
@@ -1385,7 +1383,7 @@ As good practices:
 - Automate every test not only the simple ones.
 - Report the status to all the team. Show up your tests and failures.
 
-*Ansible*, *Terraform* and *Chef* can be easily integrated with circleci:
+*Ansible*, *Terraform* and *Chef* can be easily integrated with any modern CI Solution:
 
 - **Ansible**
 
