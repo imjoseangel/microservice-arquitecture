@@ -4,11 +4,11 @@
 
 The content of this project itself is licensed under the Creative Commons Attribution 3.0 Unported license, and the underlying source code used to format and display that content is licensed under the MIT license.
 
-### Table of Contents
+## Table of Contents
 
 - [Design Document](#design-document)
   - [License](#license)
-    - [Table of Contents](#table-of-contents)
+  - [Table of Contents](#table-of-contents)
   - [1. Introduction](#1-introduction)
     - [1.1 Purpose of the System Design Document (SDD)](#11-purpose-of-the-system-design-document-sdd)
     - [1.2 Audience](#12-audience)
