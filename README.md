@@ -132,28 +132,24 @@ Allow a system to be divided into a number of smaller, individual and independen
 
 You have to implement a microservices architecture with the following requirements:
 
-| Strategic Objectives                 | Measure                                                 |
-|--------------------------------------|---------------------------------------------------------|
-| Quality Gates Creation               | Define Pre-Commit Linters                               |
-| Continuous Integration Quality Gates | Define Quality Gates on CI                              |
-| Continuous Integration Security      | Define Security on CI                                   |
-| Integration Tests                    | Define Integration Tests                                |
-| Deploy and Configure Infrastructure  | Implement IAC on CI/CD                                  |
-| Autoscaling                          | Implement Event Managed for POD and Cluster Autoscaling |
-| Container Security                   | Define and Implement Container Security                 |
-| Authentication                       | Define Authentication and RBAC                          |
-| Infrastructure Security              | Define Compliance as Code                               |
-| Monitoring                           | Define the best monitoring approach for Infra and Apps  |
-| Certificates and Passwords           | Define how to implement password and cert security      |
-| Data Store                           | Add Relational and not relational Data Store            |
-| API Gateway                          | Define API GW Infra automation                          |
-| Cache                                | Add Redis Cache to speed up Queries                     |
-| Logging                              | Define central logging and rules                        |
-| Fault Tolerance                      | Add Istio for Fault Tolerance                           |
-| Multizone                            | Define Multizone for Distributed Content and Redundancy |
-| Environments                         | Define how to work with different environments          |
-| Upgrade Process                      | How to upgrade - Operators                              |
-| Cost Management Process              | Define Cost Management                                  |
+| Strategic Objectives                 | Measure                                                  |
+|--------------------------------------|----------------------------------------------------------|
+| Quality Gates Creation               | Define Pre-Commit Linters                                |
+| Continuous Integration Quality Gates | Define Quality Gates on CI                               |
+| Continuous Integration Security      | Define Security on CI                                    |
+| Integration Tests                    | Define Integration Tests                                 |
+| Deploy and Configure Infrastructure  | Implement IAC on CI/CD                                   |
+| Autoscaling                          | Implement Event Managed for POD and Cluster Autoscaling  |
+| Container Security                   | Define and Implement Container Security                  |
+| Infrastructure Security              | Define Compliance as Code                                |
+| Monitoring                           | Define the best monitoring approach for Infra and Apps   |
+| Certificates and Passwords           | Define how to implement password and cert security       |
+| Data Store                           | Add Relational and not relational Data Store             |
+| Logging                              | Define central logging and rules                         |
+| Fault Tolerance                      | Add Istio for Fault Tolerance                            |
+| Multi-zone                           | Define Multi-zone for Distributed Content and Redundancy |
+| Environments                         | Define how to work with different environments           |
+| Upgrade Process                      | How to upgrade - Operators                               |
 
 ### 1.6 Project Topics
 
@@ -164,28 +160,24 @@ You have to implement a microservices architecture with the following requiremen
 5. Compliance as Code (Post Deployment)
 6. Infrastructure Automation
 7. Keda for Autoscaling
-8. Container Registry and Container Security
-9. Oauth and RBAC
-10. Monitoring and Performance
-11. Password Security and HTTPS certificates with Vault
-12. Relational SQL and NoSQL for data store
-13. API Gateway
-14. Redis Cache
-15. Logging
-16. Istio for Fault Tolerance
-17. Cloud Multizone redundancy
-18. Define Environments
-19. Upgrade Process
-20. Self-Service
+8. Container Security
+9. Monitoring and Performance
+10. Password Security and HTTPS certificates with Vault
+11. Relational SQL and NoSQL for data store
+12. Logging
+13. Istio for Fault Tolerance
+14. Cloud Multi-zone redundancy
+15. Environment Definition
+16. Upgrade Processes
 
 #### 1.6.1 Required
 
-1. Choose the best infrastructure platform to use
-2. Choose the best orchestration technology and their components
-3. Describe the solution to automate the infrastructure deployment and prepare the most important snippets of code/configuration
-4. Describe the solution to automate the microservices deployment and prepare the most important snippets of code/configuration
-5. Describe the testing approach for the infrastructure
-6. Describe the monitoring approach for the solution
+1. Select a Infrastructure Cloud platform
+2. Select orchestration technology
+3. Define the solution to automate the infrastructure deployment
+4. Define the solution to automate the microservices deployment
+5. Define the testing approach for the infrastructure
+6. Define the monitoring approach for the solution
 
 ### 1.7 Related Projects
 
@@ -1646,12 +1638,15 @@ One of the reasons to use K8S is this. You can connect different clouds and choo
 
 ## 4. Conclusion
 
-Although there are many uncovered big topics in this document like:
+Although there are some big topics not fully covered in this document like:
 
-- RBAC
+- Oauth and RBAC
 - POD and Container Security
 - API Gateway
 - Networking
+- Cache
+- Self-Service for Infrastructure
+- Cost Management
 
 And some others that could be improved, hopefully this document would be a good startup point for ideas and learnings. I think it could be a good base to understand different technologies and ways of working.
 
