@@ -124,9 +124,14 @@ Monolithic architectures means the code’s components are designed to work toge
 
 ### 1.5 Strategic Objectives
 
-The most important objective is to define an architecture based on processes and not tools. When selecting specific tools, we need to keep in mind the possibility to migrate/change if the maintenance or learning curve is too high. It is important to stick in the KISS and Everything as Code minds.
+The most important objective is to define an architecture based on processes and not tools. When selecting specific tools, we need to keep in mind the possibility to migrate/change if the maintenance or learning curve is too high. It is important to stick in the KISS and Everything as Code minds. The microservices arquitecture objectives are:
 
-Allow a system to be divided into a number of smaller, individual and independent services. Each service is flexible, robust, composable and complete. They run as autonomous processes and communicate with one another through APIs. Each microservice can be implemented in a different programming language on a different platform. Almost any infrastructure can run in a container which holds services encapsulated for operation. Since these containers can be operated in parallel, the existing infrastructure is easier to maintain.
+- Allow a system to be divided into a number of smaller, individual and independent services.
+- Each service is flexible, robust, composable and complete.
+- They run as autonomous processes and communicate with one another through APIs.
+- Each microservice can be implemented in a different programming language on a different platform.
+- Almost any infrastructure can run in a container which holds services encapsulated for operation.
+- Since these containers can be operated in parallel, the existing infrastructure is easier to maintain.
 
 #### Table 1: Objectives
 
