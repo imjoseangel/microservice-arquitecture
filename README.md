@@ -110,9 +110,9 @@ The SDD documents and tracks the necessary information required to effectively d
 
 The intended audience for the SDD is the project manager, project team, and the future development team. The audience or users for this system design document include the following:
 
-* Project Sponsor
-* Platform Lead
-* Platform Development and Operations Team
+- Project Sponsor
+- Platform Lead
+- Platform Development and Operations Team
 
 ### 1.3 Background
 
@@ -201,10 +201,10 @@ The proposed solution will be discussed and improved by all the Teams. Coordinat
 
 The proposed solution intends to standardize all the lines in the Platform and will be the base to prepare the right tools to improve it in the future. There are different subjects that needs to be managed properly during the lifetime of the Project and are a **MUST** to maintain the Quality and Structure of the Platform:
 
-* Review if Windows support is needed.
-* Best Practices Documentation.
-* Clear Understanding about The Company Way of Working.
-* Clear Design Documentation and Approvals before starting the implementation.
+- Review if Windows support is needed.
+- Best Practices Documentation.
+- Clear Understanding about The Company Way of Working.
+- Clear Design Documentation and Approvals before starting the implementation.
 
 #### Financial
 
@@ -214,8 +214,8 @@ There will be different proposals to adjust the solution PAAS vs IAAS custom sol
 
 We have different dependencies for this project and some are critical to the security the Framework.
 
-* Password Management
-* Good Knowledge of Variables and Patterns to avoid code repetition (Documentation and Best Practices)
+- Password Management
+- Good Knowledge of Variables and Patterns to avoid code repetition (Documentation and Best Practices)
 
 ## 2. Design Guidelines
 
@@ -235,21 +235,21 @@ The following table provides the role and contact information for the key techni
 
 #### 2.1.2 Roles
 
-* **Executive Sponsor**:
+- **Executive Sponsor**:
     1. *Approver and Sponsor* of the Solution as they will follow and approve the Solution Implementation.
 
-* **IAC Lead**:
+- **IAC Lead**:
     1. *Managers* of the Solution as they will conduct next steps and act as referees
 
-* **IAC Developers**:
+- **IAC Developers**:
     1. *Reviewers* of the Solution as they review code of the platform itself and ensure the quality of the solution.
 
 #### 2.1.3 Responsibilities
 
-* **IAC Lead**:
+- **IAC Lead**:
     1. Review Document
 
-* **IAC Developer**:
+- **IAC Developer**:
     1. Review Document
 
 #### 2.1.4 Concerns
@@ -274,20 +274,20 @@ No constraints have been detected so far.
 
 The current implementation is dependent on the following technologies and providers:
 
-* Google Cloud Platform
-* CircleCI
-* GitHub
-* Pre-Commit
-* Kubernetes (GKS)
-* Terraform
-* Vault
-* Ansible and Molecule
-* SonarQube
-* Chef
-* JMeter
-* Keda
-* Istio
-* Redis Cache
+- Google Cloud Platform
+- CircleCI
+- GitHub
+- Pre-Commit
+- Kubernetes (GKS)
+- Terraform
+- Vault
+- Ansible and Molecule
+- SonarQube
+- Chef
+- JMeter
+- Keda
+- Istio
+- Redis Cache
 
 #### 2.2.4 Risks
 
@@ -444,11 +444,11 @@ Besides all the advantages from the *Trunk Based*, the *GitHub Flow* will help d
 
 When creating infrastructure as code, there are different aspects to take into account:
 
-* Code Maintainability and Reusable
-* Deployment Speed and Reliability
-* Idempotency
-* Testing
-* Self-Service
+- Code Maintainability and Reusable
+- Deployment Speed and Reliability
+- Idempotency
+- Testing
+- Self-Service
 
 We have chose Ansible for Configuration Management and Terraform for Provisioning. It is important to make the most of both tools to achieve the points defined above.
 
@@ -581,9 +581,9 @@ We can keep different environments, but initially better to have a common one.
 
 The recommendation is to keep as much consistency as possible and keep every tool with their code base to have clear testing processes and avoid long testing processes. Also it is important to have a collaboration mind and maintain the community with fixes directly to the main projects (Terraform, Ansible, Dev-Sec, etc).
 
-* Terraform -> Go
-* Ansible -> Python
-* Chef and Inspec -> Ruby
+- Terraform -> Go
+- Ansible -> Python
+- Chef and Inspec -> Ruby
 
 Using Python as default will give us the possibility to use tools like pre-commit. Also python is by default in all the *nix Systems, so it it easier to run. Programming small scripts in bash when needed is perfect (Docker entrypoints, pre-commit hooks, etc), but we need to be sure that is compatible with other shells like `zsh` or `ksh`.
 
@@ -643,8 +643,8 @@ The important point here is using only one tool for a specific purpose if possib
 
 We choose:
 
-* Terraform for infrastructure deployment. Learning Curve is low, we can create a good code structure, it can create and destroy in parallel and has a good Cloud support.
-* Ansible for testing, operator creation and deployment and cleaning. The learning curve for a good architecture is higher but for testing, operators, cleaning processes and even to create status for Terraform is perfect.
+- Terraform for infrastructure deployment. Learning Curve is low, we can create a good code structure, it can create and destroy in parallel and has a good Cloud support.
+- Ansible for testing, operator creation and deployment and cleaning. The learning curve for a good architecture is higher but for testing, operators, cleaning processes and even to create status for Terraform is perfect.
 
 #### 3.2.2.2 Terraform. How to deploy the solution
 
@@ -996,12 +996,12 @@ Ansible is perfect to create operators to be deployed. A K8S Operator can comple
 
 It can automatically handle such tasks as:
 
-* Deploying applications
-* Updating applications to new versions
-* Reconfiguring application settings
-* Scaling applications up and down depending on usage
-* Failure handling
-* Setting up monitoring infrastructure
+- Deploying applications
+- Updating applications to new versions
+- Reconfiguring application settings
+- Scaling applications up and down depending on usage
+- Failure handling
+- Setting up monitoring infrastructure
 
 The Kubernetes Operator is able to modify the configuration and usage of an application based on the application’s output. This is determined by the custom resources defined for that application. Custom resources showing the desired state and custom resources showing the current state form a loop. The Operator observes the current state and then takes actions that will make the application produce the desired state. After the actions are executed, the current state is reevaluated and the loop begins again.
 
@@ -1223,12 +1223,12 @@ The [Chaos Toolkit](https://docs.chaostoolkit.org/) is one of the simples approa
 
 The important point here is the concept and having that resilience in mind in the pre and post-deployment. Besides the SSL, there are other ways to chaos our Infrastructure and Applications:
 
-* Network Failures
-* Maximize Out Resources
-* Simulate External Traffic (China, India, Russia, etc.)
-* Block DNS
-* Storage Failures, Overload
-* In-Memory Failure
+- Network Failures
+- Maximize Out Resources
+- Simulate External Traffic (China, India, Russia, etc.)
+- Block DNS
+- Storage Failures, Overload
+- In-Memory Failure
 
 ### 3.2.4 Section _4a_. Code and CI/CD Security
 
@@ -1362,11 +1362,11 @@ The `inspec_report.j2` file looks like:
 
 When asking to the most geeky security guys and talking about protecting and securing secrets and certificates when doing automation, all have the same answer: *Hashicorp Vault*
 
-* It supports most of the major cloud platforms out of the box. The [Google Cloud Vault](https://www.vaultproject.io/docs/secrets/gcp) secrets engine dynamically generates Google Cloud service account keys and OAuth tokens based on IAM policies. This enables users to gain access to Google Cloud resources without needing to create or manage a dedicated service account.
+- It supports most of the major cloud platforms out of the box. The [Google Cloud Vault](https://www.vaultproject.io/docs/secrets/gcp) secrets engine dynamically generates Google Cloud service account keys and OAuth tokens based on IAM policies. This enables users to gain access to Google Cloud resources without needing to create or manage a dedicated service account.
 
-* It is perfect for secrets consolidation. Example for [CircleCI](https://support.circleci.com/hc/en-us/articles/360006717953-Storing-Secret-Files-certs-etc-).
+- It is perfect for secrets consolidation. Example for [CircleCI](https://support.circleci.com/hc/en-us/articles/360006717953-Storing-Secret-Files-certs-etc-).
 
-* It generates and store credentials through cli or API. Passwords can be generated on-the-fly while using and storing it without jeopardizing security. Also it can generate Temporary passwords with TTL. As said, all the secrets can be automated through its API.
+- It generates and store credentials through cli or API. Passwords can be generated on-the-fly while using and storing it without jeopardizing security. Also it can generate Temporary passwords with TTL. As said, all the secrets can be automated through its API.
 
 ### 3.2.6 Section _4c_. WAF and Security Audit - Armor
 
@@ -1380,16 +1380,16 @@ GitHub actions are becoming more and more popular with new cool features every o
 
 As good practices:
 
-* It is important to have the possibility to run test manually without creating a new commit every time.
-* Test only new files on commits and the related integration on PR.
-* Try to test on production-like environments.
-* Do powerful and fast tests. The more the test take, the less the tool will be utilized.
-* Automate every test not only the simple ones.
-* Report the status to all the team. Show up your tests and failures.
+- It is important to have the possibility to run test manually without creating a new commit every time.
+- Test only new files on commits and the related integration on PR.
+- Try to test on production-like environments.
+- Do powerful and fast tests. The more the test take, the less the tool will be utilized.
+- Automate every test not only the simple ones.
+- Report the status to all the team. Show up your tests and failures.
 
 *Ansible*, *Terraform* and *Chef* can be easily integrated with circleci:
 
-* **Ansible**
+- **Ansible**
 
 ```yaml
 - run:
@@ -1399,7 +1399,7 @@ As good practices:
     ansible-playbook -i ansible/hosts ansible/deployment.yml
 ```
 
-* **Terraform**
+- **Terraform**
 
 ```yaml
 - run:
@@ -1410,7 +1410,7 @@ As good practices:
       terraform plan
 ```
 
-* **Inspec**
+- **Inspec**
 
 ```yaml
 - run:
@@ -1433,9 +1433,9 @@ In the presented architecture, there are two flavours when talking about metrics
 
 **Grafana** is the perfect companion for **Prometheus** as it processes the raw metrics and allow to query, visualize, alert on and understand them. Grafana has many plugins and it is important to choose the right ones.
 
-* The number of failing pods and errors within a specific namespace.
-* Resource utilization saturation—the containers’ resource consumption and allocation.
-* Kubernetes resource capacity—the total number of nodes, CPU cores, and memory available.
+- The number of failing pods and errors within a specific namespace.
+- Resource utilization saturation—the containers’ resource consumption and allocation.
+- Kubernetes resource capacity—the total number of nodes, CPU cores, and memory available.
 
 Also we can add the [Zabbix](https://grafana.com/grafana/plugins/alexanderzobnin-zabbix-app) plugin to integrate the core metrics from Zabbix with the ones comming from Kubernetes.
 
@@ -1473,11 +1473,11 @@ Also it is available as an [operator](https://github.com/vmware/kube-fluentd-ope
 
 Finally, we will name **[Jaeger](https://www.jaegertracing.io/)** as an end-to-end distributed tracing tool developed by Uber. It will trace all microservices communication and show request/response, errors on its dashboard. The tool is designed to monitor and troubleshoot distributed microservices:
 
-* Distributed context propagation
-* Distributed transaction monitoring
-* Root cause analysis
-* Service dependency analysis
-* Performance/latency optimization
+- Distributed context propagation
+- Distributed transaction monitoring
+- Root cause analysis
+- Service dependency analysis
+- Performance/latency optimization
 
 **Jaeger** can be deployed in Kubernetes using [Jaeger Operator](https://www.jaegertracing.io/docs/1.16/operator/).
 
@@ -1603,16 +1603,16 @@ node_pool {
 
 Istio not only adds fault tolerance to the equation, also is capable of doing:
 
-* [Telemetry collection](https://istio.io/latest/docs/tasks/observability/)
-* Service discovery
-* Fault Injection
-* Load balancing
-* [TLS termination/origination](https://istio.io/latest/docs/tasks/security/)
-* Request routing
-* [Traffic splitting](https://istio.io/latest/docs/tasks/traffic-management/)
-* Canary releasing
-* Traffic shadowing
-* Rate limiting
+- [Telemetry collection](https://istio.io/latest/docs/tasks/observability/)
+- Service discovery
+- Fault Injection
+- Load balancing
+- [TLS termination/origination](https://istio.io/latest/docs/tasks/security/)
+- Request routing
+- [Traffic splitting](https://istio.io/latest/docs/tasks/traffic-management/)
+- Canary releasing
+- Traffic shadowing
+- Rate limiting
 
 As you notice, some of the functionalities of a service mesh like Istio overlaps with some technologies already referred in this document. The important point is using the right technology to give value and stability to the product and make the most of all of them togeter (KEDA and Istio) for scalability. A very good introduction to Istio can be found [here](https://learn.openshift.com/servicemesh/).
 
@@ -1638,9 +1638,9 @@ Depending on the technology used it is important to backup the important data an
 
 This is a cool topic when referring to resiliency and distributed but not when talking about billing. Having a multicloud option provides the following advantages among others:
 
-* Improved Multizone
-* Cloud Provider lock-in Removal
-* Application and Infrastructure Code Cloud-Agnostic
+- Improved Multizone
+- Cloud Provider lock-in Removal
+- Application and Infrastructure Code Cloud-Agnostic
 
 One of the reasons to use K8S is this. You can connect different clouds and choose the best PaaS options for every component as well as improve the system resilience.
 
@@ -1648,10 +1648,10 @@ One of the reasons to use K8S is this. You can connect different clouds and choo
 
 Although there are many uncovered big topics in this document like:
 
-* RBAC
-* POD and Container Security
-* API Gateway
-* Networking
+- RBAC
+- POD and Container Security
+- API Gateway
+- Networking
 
 And some others that could be improved, hopefully this document would be a good startup point for ideas and learnings. I think it could be a good base to understand different technologies and ways of working.
 
