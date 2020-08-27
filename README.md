@@ -97,7 +97,7 @@ You have to implement a microservices architecture with the following requiremen
 
 ### 1.7 Related Projects
 
-There are no related projects attached to this document. This is an idependent project.
+There are no related projects attached to this document. This is an independent project.
 
 ### 1.8 Design Constraints
 
@@ -107,7 +107,7 @@ The proposed solution will be discussed and improved by all the Teams. Coordinat
 
 #### Technical
 
-The proposed solution intends to stantardise all the lines in the Platform and will be the base to prepare the right tools to improve it in the future. There are different subjects that needs to be managed properly during the lifetime of the Project and are a **MUST** to maintain the Quality and Structure of the Platform:
+The proposed solution intends to standardize all the lines in the Platform and will be the base to prepare the right tools to improve it in the future. There are different subjects that needs to be managed properly during the lifetime of the Project and are a **MUST** to maintain the Quality and Structure of the Platform:
 
 * Review if Windows support is needed.
 * Best Practices Documentation.
@@ -152,7 +152,7 @@ The following table provides the role and contact information for the key techni
 * **IAC Developers**:
     1. *Reviewers* of the Solution as they review code of the platform itself and ensure the quality of the solution.
 
-#### 2.1.3 Responsabilities
+#### 2.1.3 Responsibilities
 
 * **IAC Lead**:
     1. Review Document
@@ -266,7 +266,7 @@ The [editorconfig](http://EditorConfig.org) helps developers define and maintain
 root = true
 
 # Unix-style newlines with a newline ending every file
-[*]
+[ ]
 charset = utf-8
 end_of_line = lf
 insert_final_newline = true
@@ -321,7 +321,7 @@ secrets/
 
 The [pre-commit](https://pre-commit.com/) config file describes what repositories and hooks are installed for pre-commit. This file is located in the root of every project and as noticed is a YAML file with the different tasks to run.
 
-We will use this tool for static code analysis and other utilities that will run before commiting code to the repo. All these functionalities added to pre-commit will be reused in the CI process.
+We will use this tool for static code analysis and other utilities that will run before committing code to the repo. All these functionalities added to pre-commit will be reused in the CI process.
 
 #### 3.2.1.1.6 `.github` directory
 
@@ -352,7 +352,7 @@ Besides all the advantages from the *Trunk Based*, the *GitHub Flow* will help d
 
 When creating infrastructure as code, there are different aspects to take into account:
 
-* Code Maintenability and Reusable
+* Code Maintainability and Reusable
 * Deployment Speed and Reliability
 * Idempotency
 * Testing
@@ -360,7 +360,7 @@ When creating infrastructure as code, there are different aspects to take into a
 
 We have chose Ansible for Configuration Management and Terraform for Provisioning. It is important to make the most of both tools to achieve the points defined above.
 
-The recomendation is keeping the following structure for **Terraform**, using reusable modules and specific environments:
+The recommendation is keeping the following structure for **Terraform**, using reusable modules and specific environments:
 
 #### Envs repository
 
@@ -487,7 +487,7 @@ We can keep different environments, but initially better to have a common one.
 
 ### 3.2.1.5 Python, Go, Ruby and Shell scripting
 
-The recomendation is to keep as much consistancy as possible and keep every tool with their code base to have clear testing processes and avoid long testing processes. Also it is important to have a collaboration mind and maintain the community with fixes directly to the main projects (Terraform, Ansible, Dev-Sec, etc).
+The recommendation is to keep as much consistency as possible and keep every tool with their code base to have clear testing processes and avoid long testing processes. Also it is important to have a collaboration mind and maintain the community with fixes directly to the main projects (Terraform, Ansible, Dev-Sec, etc).
 
 * Terraform -> Go
 * Ansible -> Python
@@ -541,7 +541,7 @@ variable "k8s_names" {
 
 It will destroy `my-gke-cluster` and create 3 new clusters with the given name.
 
-This scenario is perfect for inmmutable infrastructure and is something not inherent in the Ansible phylosophy. That is the flaw point for Ansible, you need to create bunch of code for a simple operation like this.
+This scenario is perfect for inmmutable infrastructure and is something not inherent in the Ansible philosophy. That is the flaw point for Ansible, you need to create bunch of code for a simple operation like this.
 
 In the other hand, the flaw point of Terraform is knowing what is already in place. And even removing what was created manually or even in previous processes. Here is where Ansible can help if needed.
 
@@ -558,7 +558,7 @@ We choose:
 
 The most important part is following the structure defined under [git rules](#envs-repository). Under GCP, we will create one project per environment. If we need to create different isolated applications, we will create a project per application per environment. In this document we assume we have only one application, so we will create two projects.
 
-> Note: All the operations explained below has to be done on CI and with the right security from the begining. The solution for password management is **Hashicorp Vault**
+> Note: All the operations explained below has to be done on CI and with the right security from the beginning. The solution for password management is **Hashicorp Vault**
 
 We assume that the initial service account is already configured to do the deploy with the right permissions and API enabled:
 
@@ -718,7 +718,7 @@ locals {
     { default-node-pool = [] },
     zipmap(
       [for node_pool in var.node_pools : node_pool["name"]],
-      [for node_pool in var.node_pools : []]
+      [for node_pool in var.node_pools : [ ]
     ),
     var.node_pools_tags
   )
@@ -727,8 +727,8 @@ locals {
 
 ```yaml
 tags = concat(
-    lookup(local.node_pools_tags, "default_values", [true, true])[0] ? [local.cluster_network_tag] : [],
-    lookup(local.node_pools_tags, "default_values", [true, true])[1] ? ["${local.cluster_network_tag}-${each.value["name"]}"] : [],
+    lookup(local.node_pools_tags, "default_values", [true, true])[ ] ? [local.cluster_network_tag] : [],
+    lookup(local.node_pools_tags, "default_values", [true, true])[ ] ? ["${local.cluster_network_tag}-${each.value["name"]}"] : [],
     local.node_pools_tags["all"],
     local.node_pools_tags[each.value["name"]],
 )
@@ -768,7 +768,7 @@ resource "kubernetes_service" "nginx" {
 
   spec {
     selector = {
-      app = kubernetes_pod.nginx.metadata[0].labels.app
+      app = kubernetes_pod.nginx.metadata[ ].labels.app
     }
 
     session_affinity = "ClientIP"
@@ -1062,12 +1062,12 @@ As said, `molecule` tests can integrate also infrastructure and operators testin
     that:
       - vaultspolicies is iterable
       - vaultspolicies | length() == 1
-      - "'{{ vaults[1].name }}' == 'myvault'"
-      - "'{{ vaults[1].vault_uri }}' == 'https://myvault'"
-      - vaultspolicies[0].object_id is match('[A-Za-z0-9]{8}\-[A-Za-z0-9]{4}\-[A-Za-z0-9]{4}\-[A-Za-z0-9]{4}\-[A-Za-z0-9]{12}')
+      - "'{{ vaults[ ].name }}' == 'myvault'"
+      - "'{{ vaults[ ].vault_uri }}' == 'https://myvault'"
+      - vaultspolicies[ ].object_id is match('[A-Za-z0-9]{8}\-[A-Za-z0-9]{4}\-[A-Za-z0-9]{4}\-[A-Za-z0-9]{4}\-[A-Za-z0-9]{12}')
       - vaultssecrets | length() == 2
-      - "'{{ vaultssecrets[0].key }}' == 'molecule'"
-      - "'{{ vaultssecrets[0].value }}' == 'M013cu13'"
+      - "'{{ vaultssecrets[ ].key }}' == 'molecule'"
+      - "'{{ vaultssecrets[ ].value }}' == 'M013cu13'"
 ```
 
 And Inspec
@@ -1229,7 +1229,7 @@ A good example can be running inspec with Ansible:
 
     - name: Create Failed Controls Dictionary
       set_fact:
-        failed_controls_list: "{{ failed_controls_list | default ([]) + [ { 'server' : inventory_hostname, 'title' : item.id, 'description' : item.message.split('(compared')[0].replace('\\r\\n', '') } ] }}"
+        failed_controls_list: "{{ failed_controls_list | default ([]) + [ { 'server' : inventory_hostname, 'title' : item.id, 'description' : item.message.split('(compared')[ ].replace('\\r\\n', '') } ] }}"
       with_items: "{{ failed_controls }}"
 
     - name: Set var for Reporting
@@ -1280,9 +1280,141 @@ When asking to the most geeky security guys and talking about protecting and sec
 
 Google Armor is not cheap but something to take into account. It is quite difficult to protect applications exposed to the internet. The combination of Google Cloud Armor with Google Cloud Load Balancing protect the applications against the web’s most common attacks, provide granular Layer 7 access controls, and defend against volumetric, protocol and application-level DDoS attacks.
 
-### 3.2.7 Section _5_. Continuous Integration and Deployment Tool
+### 3.2.7 Section _5_. Continuous Integration and Deployment
 
-On Branch only new files. Manual Tests. 20 min max. 
+This is another long topic to cover. I find interesting to comment few tips and add some links as reference.
+
+GitHub actions are becoming more and more popular with new cool features every other week and a really good support and integration. Going to another tool like CircleCI and back needs to be painless and it is important to choose similar ways of working between tools: [Migrating from Github Actions](https://circleci.com/docs/2.0/migrating-from-github/).
+
+As good practices:
+
+* It is important to have the possibility to run test manually without creating a new commit every time.
+* Test only new files on commits and the related integration on PR.
+* Try to test on production-like environments.
+* Do powerful and fast tests. The more the test take, the less the tool will be utilized.
+* Automate every test not only the simple ones.
+* Report the status to all the team. Show up your tests and failures.
+
+*Ansible*, *Terraform* and *Chef* can be easily integrated with circleci:
+
+* **Ansible**
+
+```yaml
+- run:
+  name: Deploy to production
+  command: |
+    . env/bin/activate
+    ansible-playbook -i ansible/hosts ansible/deployment.yml
+```
+
+* **Terraform**
+
+```yaml
+- run:
+    name: terraform plan
+    command: |
+      source $BASH_ENV
+      cd ~/project/
+      terraform plan
+```
+
+* **Inspec**
+
+```yaml
+- run:
+  name: Inspec production
+  command: |
+    inspec exec https://github.com/dev-sec/linux-baseline -b winrm --host myserver --user myuser --password mypassword --reporter=json-min'
+```
+
+### 3.2.8 Section _6_. Logging, Metrics and Traceability
+
+In the presented architecture, there are two flavours when talking about metrics, logging and traceability.
+
+*IaaS or Single Servers*. These can easily monitored using metrics and parameters like CPU Speed, IOPS or Memory comsumption. It is important to choose the right metrics in quality and quantity. Analyzing too many data points continuously will generate volumes of unnecessary alerts, data, and false flags.
+
+**Zabbix** is one of the best real-time monitoring product and can collect metrics from any devices, systems, applications and databases. In the next section we will see options to connect to the Kubernetes monitoring.
+
+*Kubernetes*. Due to the complexity of Kubernetes and microservices, we need to analyze its performance and service dependencies with different tools. Probably the most known and already integrated in many clouds is:
+
+**Prometheus** does one thing and it does it well. It has a simple yet powerful data model and a query language that lets you analyse how your applications and infrastructure are performing. It does not try to solve problems outside of the metrics space, leaving those to other more appropriate tools. It can be run in Kubernetes using a [Kubernetes Operator](https://github.com/coreos/prometheus-operator) or in a stand-alone mode. Prometheus uses exporters to allow third party data to be brought into its data store.
+
+**Grafana** is the perfect companion for **Prometheus** as it processes the raw metrics and allow to query, visualize, alert on and understand them. Grafana has many plugins and it is important to choose the right ones.
+
+* The number of failing pods and errors within a specific namespace.
+* Resource utilization saturation—the containers’ resource consumption and allocation.
+* Kubernetes resource capacity—the total number of nodes, CPU cores, and memory available.
+
+Also we can add the [Zabbix](https://grafana.com/grafana/plugins/alexanderzobnin-zabbix-app) plugin to integrate the core metrics from Zabbix with the ones comming from Kubernetes.
+
+**Fluentd** is an open-source data collector for unified logging layers. It uses a *DaemonSet* that ensures that all (or some) Nodes run a copy of a Pod. As nodes are added to the cluster, Pods are added to them. As nodes are removed from the cluster, those Pods are garbage collected. 
+
+Together with **ELK** (Elasticsearch, Logstash, and Kibana). All the log messages generated as some sort of event and stream it into a single storage ordered by timestamp. This channeling of logs/messages/texts is done by Logstash. These messages/texts are now fed into Elastic clusters. Elastic Clusters mainly do something called ‘reverse indexing’. All the messages are stored as a document and are indexed using the words, phrases. Kibana acts as the front end UI for the whole stack providing an interface where you can query for messages using a specified query language, generate charts/visualizations and so on.
+
+**ELK** can be installed using an [operator](https://operatorhub.io/operator/elastic-cloud-eck). More information also [here](https://www.elastic.co/blog/introducing-elastic-cloud-on-kubernetes-the-elasticsearch-operator-and-beyond).
+
+As said, **Fluend** can send logs to **[ELK](https://docs.fluentd.org/output/elasticsearch)**. For instance:
+
+```yaml
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: fluentd
+  namespace: kube-syste
+spec:
+    spec:
+      containers:
+      – name: fluentd
+        image: quay.io/fluent/fluentd-kubernetes-daemonset
+        env:
+          – name:  FLUENT_ELASTICSEARCH_HOST
+            value: “elasticsearch-logging”
+          – name:  FLUENT_ELASTICSEARCH_PORT
+            value: “9200”
+          – name:  FLUENT_ELASTICSEARCH_SSL_VERIFY
+            value: “true”
+          – name:  FLUENT_ELASTICSEARCH_SSL_VERSION
+            value: “TLSv1_2”
+```
+
+Also it is available as an [operator](https://github.com/vmware/kube-fluentd-operator).
+
+Finally, we will name **[Jaeger](https://www.jaegertracing.io/)** as an end-to-end distributed tracing tool developed by Uber. It will trace all microservices communication and show request/response, errors on its dashboard. The tool is designed to monitor and troubleshoot distributed microservices:
+
+* Distributed context propagation
+* Distributed transaction monitoring
+* Root cause analysis
+* Service dependency analysis
+* Performance/latency optimization
+
+**Jaeger** can be deployed in Kubernetes using [Jaeger Operator](https://www.jaegertracing.io/docs/1.16/operator/).
+
+### 3.2.8.1 Google Cloud Operations (Stackdriver)
+
+A very important option to take into account and discuss is a Cloud Based solution. [GCP Stackdriver](https://cloud.google.com/products/operations) provides most of the solutions for the specific cloud, but that is also its weak point. If we want to go multicloud for redundancy, we should look for a centralized dashboard for all of them. Another weak point is pricing. We need to be careful when using central logging and the way to manage logs.
+
+#### 3.2.8.1.1 Log Definition and Best Practices
+
+It is important to have a commong logging strategy in the solution and define a common goal. We need to avoid log noise but have the right logs for proper debugging and troubleshooting. Also, we need to avoid extra logs to avoid extra costs and storage.
+
+It is important to standardize the logs to have a common way to parse most of them and subsequently analyze them. This means creating standards for formatting and naming fields. Regarding formatting, the most commonly used is *JSON* and *Key-Value-Pairs*. It is important to choose also the standard thinking in the context we are. If it’s the ELK Stack, for example, JSON is the format you will want to use. To finalize, remember to provide context to the logs with the right information and mapping.
+
+```json
+{
+  "@timestamp": "2017-07025 17:02:12",
+  "level": "error",
+  "message": "connection refused",
+  "service": "listener",
+  "thread": "125",
+  "customerid": "776622",
+  "ip": "34.124.233.12",
+  "queryid": "45"
+}
+```
+
+### 3.2.9 Section _7_. Event-Driven autoscaling - KEDA
+
+**KEDA** (Kubernetes-based Event-driven Autoscaling) is an open source component developed by Microsoft and Red Hat to allow any Kubernetes workload to benefit from the event-driven architecture model. 
 
 ## 4. Project Strategy
 
