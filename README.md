@@ -609,7 +609,7 @@ resource "google_container_cluster" "primary" {
 }
 ```
 
-That will install a single GKE.
+to will install a single GKE.
 
 But if we change to:
 
@@ -622,7 +622,7 @@ resource "google_container_cluster" "primary" {
 }
 ```
 
-Where vars is
+Where vars are
 
 ```yaml
 variable "k8s_names" {
@@ -632,7 +632,7 @@ variable "k8s_names" {
 }
 ```
 
-It will destroy `my-gke-cluster` and create 3 new clusters with the given name.
+It will destroy `my-gke-cluster` and create 3 new clusters with the given names.
 
 This scenario is perfect for inmmutable infrastructure and is something not inherent in the Ansible philosophy. That is the flaw point for Ansible, you need to create bunch of code for a simple operation like this.
 
