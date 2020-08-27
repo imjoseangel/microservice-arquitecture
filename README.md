@@ -14,7 +14,7 @@ The content of this project itself is licensed under the Creative Commons Attrib
 
 The SDD documents and tracks the necessary information required to effectively define architecture and system design in order to give the development team guidance on the architecture of the system to be developed. Design documents are incrementally and iteratively produced during the system development life cycle, based on the particular circumstances of the information technology (IT) project and the system development methodology used for developing the system.
 
-### 1.2 Audience
+### 1.2 Audience
 
 The intended audience for the SDD is the project manager, project team, and the future development team. The audience or users for this system design document include the following:
 
@@ -131,17 +131,17 @@ We have different dependencies for this project and some are critical to the sec
 
 System design can cross many different groups within an organization to ensure requirements are gathered and met for all stakeholders. As such, the roles and responsibilities section may be necessary to provide the team with clarification on who performs various roles. This section also serves as a list of points of contact for the team and stakeholders should issues and concerns arise which need to be addressed.
 
-#### 2.1.1 Technical / Project Stakeholders
+#### 2.1.1 Technical / Project Stakeholders
 
 The following table provides the role and contact information for the key technical and project stakeholders associated with the system design.
 
-##### Table 2: Project members contact information
+##### Table 2: Project members contact information
 
 | Name             | Role              | email                 |
 |------------------|-------------------|-----------------------|
 | Jose Angel Munoz | Executive Sponsor | josea.munoz@gmail.com |
 
-#### 2.1.2 Roles
+#### 2.1.2 Roles
 
 * **Executive Sponsor**:
     1. *Approver and Sponsor* of the Solution as they will follow and approve the Solution Implementation.
@@ -152,7 +152,7 @@ The following table provides the role and contact information for the key techni
 * **IAC Developers**:
     1. *Reviewers* of the Solution as they review code of the platform itself and ensure the quality of the solution.
 
-#### 2.1.3 Responsibilities
+#### 2.1.3 Responsibilities
 
 * **IAC Lead**:
     1. Review Document
@@ -164,7 +164,7 @@ The following table provides the role and contact information for the key techni
 
 The solution will be very generic and focused on **GCP** as the default Cloud provider.
 
-### 2.2 Design Considerations
+### 2.2 Design Considerations
 
 #### 2.2.1 Assumptions
 
@@ -178,7 +178,7 @@ The solution will be very generic and focused on **GCP** as the default Cloud pr
 
 No constraints have been detected so far.
 
-#### 2.2.3 Dependencies
+#### 2.2.3 Dependencies
 
 The current implementation is dependent on the following technologies and providers:
 
@@ -197,15 +197,15 @@ The current implementation is dependent on the following technologies and provid
 * Istio
 * Redis Cache
 
-#### 2.2.3 Risks
+#### 2.2.3 Risks
 
 Minimal risk is associated with the system design. This is primarily due to the fact that the current and architecture will not be modified to meet the needs of the proposed solution. New features and solutions can be implemented without breaking current implementations.
 
 Properly Alignment with the the teams (Two-Way KT and Support) and splitting the project in phases are key for its implementation.
 
-## 3. Architecture
+## 3. Architecture
 
-### 3.1 High Level Flow Diagrams
+### 3.1 High Level Flow Diagrams
 
 #### Components View
 
@@ -1470,6 +1470,63 @@ spec:
       threshold: '3'
       query: sum(rate(http_requests[2m]))
 ```
+
+KEDA will poll Prometheus target every fifteen seconds. A minimum of one Pod will be launched (minReplicaCount) and the maximum number of Pods will be up to 10.
+
+Kubernetes can be also autoscaled with [Istio Metrics](#3210-section-8-microservices-fault-tolerance---istio):
+
+```yaml
+sum(
+    rate(
+      istio_requests_total{
+        destination_workload="podinfo",
+        destination_workload_namespace="myapp",
+        reporter="destination",
+        response_code!="404"
+      }[1m]
+    )
+  )
+```
+
+#### 3.2.9.1 Kubernetes Cluster Autoscaling
+
+[Cluster autoscaler](https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler) is a tool that automatically adjusts the size of the Kubernetes cluster. You can see the concept [here](https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-autoscaler). To implement with Terraform, just use:
+
+```yaml
+node_pool {
+  name       = "default-pool"
+  node_count = 1
+
+  autoscaling {
+    min_node_count = 1
+    max_node_count = 3
+  }
+```
+
+### 3.2.10 Section _8_. Microservices Fault Tolerance - Istio
+
+*[Istio](https://istio.io/)* is a service mesh that provides the fundamentals you need to successfully run a distributed microservice architecture. You can have and automated installed version and upgraded when upgrading [GKE](https://cloud.google.com/istio/docs).
+
+*Istio* adds fault tolerance to the application without any changes to code. Resilience features include timeouts, retries with timeouts, circuit breakers, health checks, AZ-aware load balancing, and systematic fault injection. Basically it can be used to break the circuit if there is no response from the dependent microservices for the given SLA/ETA and provide a mechanism to re-try and graceful shutdown services without any data loss.
+
+Istio not only adds fault tolerance to the equation, also is capable of doing:
+
+* [Telemetry collection](https://istio.io/latest/docs/tasks/observability/)
+* Service discovery
+* Fault Injection
+* Load balancing
+* [TLS termination/origination](https://istio.io/latest/docs/tasks/security/)
+* Request routing
+* [Traffic splitting](https://istio.io/latest/docs/tasks/traffic-management/)
+* Canary releasing
+* Traffic shadowing
+* Rate limiting
+
+As you notice, some of the functionalities of a service mesh like Istio overlaps with some technologies already referred in this document. The important point is using the right technology to give value and stability to the product and make the most of all of them togeter (KEDA and Istio) for scalability. A very good introduction to Istio can be found [here](https://learn.openshift.com/servicemesh/).
+
+### 3.2.11 Section _9_. Microservices Fault Tolerance - Istio
+
+
 
 ## 4. Project Strategy
 
