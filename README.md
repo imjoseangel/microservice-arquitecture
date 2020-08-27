@@ -1646,16 +1646,16 @@ One of the reasons to use K8S is this. You can connect different clouds and choo
 
 ## 4. Conclusion
 
-There are many uncovered big topics in this document:
+Although there are many uncovered big topics in this document like:
 
 * RBAC
 * POD and Container Security
 * API Gateway
 * Networking
 
-And some others that could be improved. Hopefully this document would be a good startup point for ideas and learnings as well as a good base to understand different technologies and ways of working.
+And some others that could be improved, hopefully this document would be a good startup point for ideas and learnings. I think it could be a good base to understand different technologies and ways of working.
 
-Please don't hesitate to contact me for ammends, issues or any other queries.
+Please don't hesitate to contact me if you find any issue or incorrect idea or any other queries.
 
 ## 5. Project Strategy
 
