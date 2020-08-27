@@ -634,13 +634,13 @@ variable "k8s_names" {
 
 It will destroy `my-gke-cluster` and create 3 new clusters with the given names.
 
-This scenario is perfect for inmmutable infrastructure and is something not inherent in the Ansible philosophy. That is the flaw point for Ansible, you need to create bunch of code for a simple operation like this.
+This scenario is perfect for immutable infrastructure and is something not inherent in the Ansible philosophy. That is the flaw point for Ansible, you need to create bunch of code for a simple operation like this.
 
-In the other hand, the flaw point of Terraform is knowing what is already in place. And even removing what was created manually or even in previous processes. Here is where Ansible can help if needed.
+In the other hand, the flaw point of Terraform is knowing what is already in place. It is not trivial to remove components created manually or even in previous processes with a different tool. Here is where Ansible can help if needed.
 
 #### 3.2.2.1.1 A tool for a specific purpose
 
-The important point here is using only one tool for a specific purpose if possible. When finding an issue working with multiple tools is harder to debug it due to the complexity of the solution. The simple, the better.
+The important point here is using only one tool for a specific purpose if possible. It is harder debugging issues when working with multiple tools due to the complexity of the solution. The simple, the better.
 
 We choose:
 
@@ -691,8 +691,8 @@ terraform {
 }
 ```
 
-Do terraform init --backend-config="encryption_key=SECRET" to encrypt the backend.
-The encryption key WILL be written to the .terraform directory. This needs to be managed and store in the *Vault* solution.
+Do `terraform init --backend-config="encryption_key=SECRET"` to encrypt the backend.
+The encryption key WILL be written to the `.terraform` directory. This needs to be managed and store in the *Vault* solution.
 
 ##### 3.2.2.2.3 Project Creation
 
@@ -746,7 +746,7 @@ Although this is a very simple example, find that the main module is totally inm
 
 ##### 3.2.2.2.4 GKE Deployment
 
-We will take a GKE as deployment example with NGIX Ingress. The rest of the components will follow the same structure. There are different topics that will be covered later as networking or security.
+We will take a GKE as deployment example with NGIX Ingress. The rest of the components will follow the same structure. There are different topics that will be covered later like monitoring or security.
 
 Besides the GKE Creation:
 
@@ -784,7 +784,7 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
 }
 ```
 
-For production, the automation needs to be more advanced, for instance the tags creation defining locals:
+To standardize the deployments, it is important to improve the automation for the different sections, like tags creation defining locals:
 
 ```yaml
 locals {
@@ -940,7 +940,9 @@ The Load balancer configuration will cover both Clusters in Zone A and Zone B fo
 
 #### 3.2.2.3 Terraform. Versioned modules
 
-Following the structure defined in the [Important](#3211-important-files-and-directories), it is important to define a release strategy for the modules. If you’re using GitHub, you can use the GitHub UI to create a release, which will create a tag under the hood.
+Following the structure defined in the [Important Files and Directories Section](#3211-important-files-and-directories), it is a good thing defining a release strategy for the modules.
+
+You can use the GitHub [actions](https://github.com/imjoseangel/ansiblecommon/blob/devel/.github/workflows/release.yml) to create a release, which will create a tag under the hood.
 
 Now you can use this versioned module in both staging and production by specifying a Git URL in the source parameter.
 
@@ -953,9 +955,9 @@ module "webserver_cluster" {
 
 #### 3.2.2.4 Other Services
 
-As discussed before, the implementation of other PaaS will be performed in the same way. It is important to analyze the cost vs maintenance vs functionality for the given services. For instance, using PostgreSQL can be quite cheaper than using the firestore option. Creating IAAS services need VM Operating System maintenance and the backup options are not as straight-forwards than the one inside the PaaS, but it is important to take this option into account for small services and POCs.
+As discussed before, the implementation of other PaaS will be performed in the same way. It is important to analyze the cost vs maintenance vs functionality for the given services. For instance, using PostgreSQL can be quite cheaper than using the firestore option. When using IaaS it is important consider the Operating System maintenance and the backup options.
 
-Deployment a IaaS with terraform is quite straightforward (Besides Networking, firewalling, etc):
+Deployment a Computer with terraform is quite easy:
 
 ```yaml
 resource "google_compute_instance" "default" {
@@ -989,11 +991,13 @@ resource "google_compute_instance" "default" {
 }
 ```
 
+>**Note**: We asume that network, firewall or disk creation is part of the same process but has not been reflected in the example.
+
 The important part is to configure and harden it properly. Here is were the Compliance as Code and Ansible mark the difference. Chef for testing, Ansible to implement it. We will discuss this later in the security section. [GitHub Link](https://github.com/dev-sec)
 
 #### 3.2.2.5 Section _2b_Ansible. Kubernetes Operators. Microservices Deployment
 
-Ansible is perfect to create operators to be deployed. A K8S Operator can complete complex tasks in order to achieve the desired changes in the application’s output. It is clear that Operators is the present and the future to manage Kubernetes clusters.
+Ansible is perfect to create K8S operators. A K8S Operator can complete complex tasks in order to achieve the desired changes in the application’s output. It is clear that Operators is the present and the future to manage Kubernetes clusters.
 
 It can automatically handle such tasks as:
 
@@ -1008,23 +1012,21 @@ The Kubernetes Operator is able to modify the configuration and usage of an appl
 
 For example, a custom resource could define the desirable state of a new server instance as some amount of load capability based on its physical resources.The Operator would then adjust the configuration until new instances reached these standards.
 
-Creating an Ansible Operator:
-
-As simple as:
+To create an Ansible Operator run:
 
 ```bash
 operator-sdk init --plugins=ansible --domain example.com
 ```
 
-We will create the API:
+Create the API:
 
 ```bash
 operator-sdk create api --group myapp --version v1alpha1 --kind MyApp --generate-role
 ```
 
-One of the most important files here is the `watches.yml` file. Reference [here](https://sdk.operatorframework.io/docs/building-operators/ansible/reference/watches/)
+Review the `watches.yml` file as an important part of the process. Reference [here](https://sdk.operatorframework.io/docs/building-operators/ansible/reference/watches/)
 
-For the logic, we will just configure the Ansible Role:
+For the logic, just configure the Ansible Role:
 
 ```yaml
 - name: start myapp
@@ -1054,7 +1056,7 @@ For the logic, we will just configure the Ansible Role:
                 - containerPort: 8080
 ```
 
-This is the main configuration. To finish and push the container to the registry:
+To finish and push the container to the registry (In the example docker.io):
 
 ```bash
 make docker-build docker-push IMG=docker.io/myapp:1
@@ -1068,12 +1070,21 @@ make deploy
 ```
 
 ```bash
-kubectl apply -f config/samples/cache_v1alpha1_myapp.yaml
+kubectl apply -f config/samples/myapp_v1alpha1_myapp.yaml
+```
+
+```yaml
+apiVersion: myapp.example.com/v1alpha1
+kind: myapp
+metadata:
+  name: myapp-sample
+spec:
+  size: 3
 ```
 
 ### 3.2.3 Section _3_. Testing
 
-Before continuing with other sections, it is fundamental to define how to test or developments and integrations. There will be different test phases, some running on our local computers, some on CI and some when going to production. We are going to try to conver some and going through the most important phases.
+In any project it is basic to define how to test our developments and integrations. There will be different test phases, some running on our local computers, some on CI and some when going to production. We are going to go through the most important phases.
 
 ### 3.2.3.1 Pre-Commit
 
@@ -1143,7 +1154,7 @@ Check [pre-commit hooks page](https://pre-commit.com/hooks.html) and [GitHub](ht
 
 ### 3.2.3.2 Code Testing and Integration Tests on CI
 
-The most typical tool for Static Analysis and Unit Testing is Sonar, but on CI and mostly for Infrastructure, unit testing are not easy to find. If we don't require cool reporting boards, but we want to keep quality, the same `pre-commit` hooks can be reutilized in Continous Integration (Sanity Testing) together with the Integration Tests.
+The most typical tool for Static Analysis and Unit Testing is Sonar. On Continuos Integration and mostly for Infrastructure, unit testing are not easy to find. If we don't require cool reporting boards, but we want to keep quality, the same `pre-commit` hooks can be reused in Continous Integration (Sanity Testing) together with the Integration Tests.
 
 There are two nice tools to test our deployments: `molecule` and `inspec`. Both are really powerful and good options with low learning curve. We will use both for operators and security respectively so is a question of deciding as a team what is the best option for integration testing. Both tools can work together and molecule support inspec as assertion tool.
 
@@ -1179,13 +1190,13 @@ describe "services" do
 end
 ```
 
-Another option for infrastructure with Terraform is [terratest](https://github.com/gruntwork-io/terratest). The assertions are developed in **golang** and the integration with Terraform is really good and go native but the learning curve is higher and it is more difficult to maintain.
+Another option for infrastructure with Terraform is [terratest](https://github.com/gruntwork-io/terratest). The assertions are developed in **golang** and the integration with Terraform is really good and go native but the learning curve is higher and the code more difficult to maintain.
 
 ### 3.2.3.3 Performance Testing
 
 ### 3.2.3.3.1 Operator SDK Testing
 
-Operators have their own molecule tests that will run on CI. A complement for performance is also the [Operator SDK Performance Testing](https://github.com/geerlingguy/operator-sdk-performance-testing). This framework can test the operators performance using **Ansible** and give a good view of how to run different *molecule* test for K8S.
+Operators have their own molecule tests that will run on CI. A complement for performance is also the [Operator SDK Performance Testing](https://github.com/geerlingguy/operator-sdk-performance-testing). This framework can test the operators performance using **Ansible**. It is the perfect start to run *molecule* test for K8S.
 
 ### 3.2.3.3.2 JMeter Testing and API Mocking
 
@@ -1193,7 +1204,7 @@ The best way to test the performance of most of the components in this arquitect
 
 ### 3.2.3.4 Resilience Testing
 
-This is the most difficult part to achieve but it is important to be prepared for a Disaster. We will talk about recovery and resilence later, but we will focus in *Chaos experiments*.
+This kind of testing are performed in the most mature teams but key to be prepared for a Disaster. We will talk about recovery and resilence later, now we will focus in *Chaos experiments*.
 
 The [Chaos Toolkit](https://docs.chaostoolkit.org/) is one of the simples approach to start learning and experimenting with our platform with hypotetical scenarios. An example is in their [tuto page](https://docs.chaostoolkit.org/reference/tutorial/) when it tests what happens when a SSL certificate expires:
 
@@ -1222,7 +1233,7 @@ The [Chaos Toolkit](https://docs.chaostoolkit.org/) is one of the simples approa
 }
 ```
 
-The important point here is the concept and having that resilience in mind in the pre and post-deployment. Besides the SSL, there are other ways to chaos our Infrastructure and Applications:
+The important point here is having the resilience concept in mind in the pre and post-deployment. Besides the TLS, there are other ways to chaos our Infrastructure and Applications:
 
 - Network Failures
 - Maximize Out Resources
@@ -1233,21 +1244,21 @@ The important point here is the concept and having that resilience in mind in th
 
 ### 3.2.4 Section _4a_. Code and CI/CD Security
 
-Security must be part of the whole architecture, including networking, certificates and passwords, code security, platform and cloud security. We won't cover Layer3 firewall rules in depth as it is a basic concept commented when deploying K8S.
+Security must be part of the whole architecture, including networking, certificates and passwords, code security, platform and cloud security. We won't cover Layer3 firewall rules.
 
 #### 3.2.4.1 Code Security - SAST, SCA and CVA
 
-**SAST** is something we have been talk already with pre-commit and CI Testing. It stands for Static Analysis and Security Testing. These security tools look for vulnerabilities in the way code is written. GitHub offers an integrated solution call CodeQL Analysis supporting *C, C++, C#, Java, JavaScript, TypeScript, Python, and Go*.
+**SAST** is something described already with pre-commit and CI Testing. It stands for Static Analysis and Security Testing. These security tools look for vulnerabilities in the way code is written. GitHub offers an integrated solution call CodeQL Analysis supporting *C, C++, C#, Java, JavaScript, TypeScript, Python, and Go*.
 
-**SCA** looks for Open Source Software vulnerabilities in our applications and code. This is the most important as they identify the majority of security and policy issues in the applications and are extremely fast with a low false positive rate. GitHub *Dependabot* is an integrated service to do this job.
+**SCA** looks for Open Source Software vulnerabilities in our applications and code. This is really important as they identify the majority of security and policy issues in the applications and are extremely fast with a low false positive rate. GitHub *Dependabot* is an integrated service to do this job.
 
-**CVA or CSA** stands for Container Vulnerability / Security Analysis. It refers to the analysis of containers and images (Docker, etc) for security vulnerabilities. The project [clair](https://github.com/quay/clair) or [Anchore](https://github.com/marketplace/actions/anchore-container-scan) are a good references.
+**CVA or CSA** stands for Container Vulnerability / Security Analysis. It refers to the analysis of containers and images (Docker, etc) for security vulnerabilities. The project [clair](https://github.com/quay/clair) or [Anchore](https://github.com/marketplace/actions/anchore-container-scan) are good references.
 
 #### 3.2.4.2 Compliance as Code
 
 Chef InSpec is an open-source framework for testing and auditing your applications and infrastructure. Chef InSpec works by comparing the actual state of your system with the desired state that you express in easy-to-read and easy-to-write Chef InSpec code. Chef InSpec detects violations and displays findings in the form of a report, but puts you in control of remediation.
 
-The structure has been explained in the [section](#3214-compliance-as-code---chef-git-structure)
+The Repository structure has been explained in the following [section](#3214-compliance-as-code---chef-git-structure)
 
 The `inspec.yml` file contains the attributes or variables for the different operations:
 
@@ -1270,11 +1281,11 @@ describe google_container_cluster(project: 'chef-inspec-gcp', location: 'europe-
 end
 ```
 
-The important part is the compliance framework available at [DevSec](https://github.com/dev-sec). When using IaaS it is fully recommended to apply the different hardening configurations available for ansible and check with the official CIS Frameworks.
+The best value from this tool is how the community maintain the different compliance frameworks. It is available at [DevSec](https://github.com/dev-sec). When using IaaS it is fully recommended to use the different hardening configurations available for ansible and test with the official CIS Frameworks.
 
-There are also checks available for the Cloud. For instance and continuing with GCP, it is available [here](https://github.com/inspec/inspec-gcp).
+There are also checks available for the Cloud. For instance for GCP, can be found [here](https://github.com/inspec/inspec-gcp).
 
-It is important to define a project per framework and run them like:
+In order to maintain consistancy, the recommendation is keeping a project per framework and run them like:
 
 ```bash
 inspec exec https://github.com/dev-sec/linux-baseline -b winrm --host myserver --user myuser --password mypassword --reporter=json-min'
@@ -1350,7 +1361,7 @@ A good example can be running inspec with Ansible:
       changed_when: false
 ```
 
-The `inspec_report.j2` file looks like:
+Where `inspec_report.j2` file looks like:
 
 ```jinja
 {{ "%s, %s, %s" | format("Server", "Title", "Description") }}
@@ -1361,21 +1372,19 @@ The `inspec_report.j2` file looks like:
 
 ### 3.2.5 Section _4b_. Passwords and Certificates Security
 
-When asking to the most geeky security guys and talking about protecting and securing secrets and certificates when doing automation, all have the same answer: *Hashicorp Vault*
+If you ask to the most geeky security guys and discuss with them about how to protect and secure secrets and certificates when doing automation, probably you will receive the same answer: *Hashicorp Vault*
 
 - It supports most of the major cloud platforms out of the box. The [Google Cloud Vault](https://www.vaultproject.io/docs/secrets/gcp) secrets engine dynamically generates Google Cloud service account keys and OAuth tokens based on IAM policies. This enables users to gain access to Google Cloud resources without needing to create or manage a dedicated service account.
 
 - It is perfect for secrets consolidation. Example for [CircleCI](https://support.circleci.com/hc/en-us/articles/360006717953-Storing-Secret-Files-certs-etc-).
 
-- It generates and store credentials through cli or API. Passwords can be generated on-the-fly while using and storing it without jeopardizing security. Also it can generate Temporary passwords with TTL. As said, all the secrets can be automated through its API.
+- Secret generation and store can be created through cli or API. Credentials can be generated on-the-fly while using and storing it without jeopardizing security or even with TTL.
 
 ### 3.2.6 Section _4c_. WAF and Security Audit - Armor
 
 Google Armor is not cheap but something to take into account. It is quite difficult to protect applications exposed to the internet. The combination of Google Cloud Armor with Google Cloud Load Balancing protect the applications against the web’s most common attacks, provide granular Layer 7 access controls, and defend against volumetric, protocol and application-level DDoS attacks.
 
 ### 3.2.7 Section _5_. Continuous Integration and Deployment
-
-This is another long topic to cover. I find interesting to comment few tips and add some links as reference.
 
 GitHub actions are becoming more and more popular with new cool features every other week and a really good support and integration. Going to another tool like CircleCI and back needs to be painless and it is important to choose similar ways of working between tools: [Migrating from Github Actions](https://circleci.com/docs/2.0/migrating-from-github/).
 
@@ -1446,7 +1455,7 @@ Together with **ELK** (Elasticsearch, Logstash, and Kibana). All the log message
 
 **ELK** can be installed using an [operator](https://operatorhub.io/operator/elastic-cloud-eck). More information also [here](https://www.elastic.co/blog/introducing-elastic-cloud-on-kubernetes-the-elasticsearch-operator-and-beyond).
 
-As said, **Fluend** can send logs to **[ELK](https://docs.fluentd.org/output/elasticsearch)**. For instance:
+**Fluend** can send logs to **[ELK](https://docs.fluentd.org/output/elasticsearch)**. For instance:
 
 ```yaml
 apiVersion: extensions/v1beta1
@@ -1484,7 +1493,7 @@ Finally, we will name **[Jaeger](https://www.jaegertracing.io/)** as an end-to-e
 
 ### 3.2.8.1 Google Cloud Operations (Stackdriver)
 
-A very important option to take into account and discuss is a Cloud Based solution. [GCP Stackdriver](https://cloud.google.com/products/operations) provides most of the solutions for the specific cloud, but that is also its weak point. If we want to go multicloud for redundancy, we should look for a centralized dashboard for all of them. Another weak point is pricing. We need to be careful when using central logging and the way to manage logs.
+A very important option to take into account and discuss is a Cloud Based solution. [GCP Stackdriver](https://cloud.google.com/products/operations) provides most of the tools for the specific cloud. In the other hand, it is also its weak point. If we want to go multicloud for redundancy, we should look for a centralized dashboard for all of them. Another weak point is pricing. We need to be careful when using central logging and the way to manage logs.
 
 #### 3.2.8.1.1 Log Definition and Best Practices
 
@@ -1528,15 +1537,15 @@ spec:
 
 but, this is a manual process.
 
-The automated way can be performed by using Horizontal Pod Autoscaler. For instance:
+The automated way can be performed by using Horizontal Pod Autoscaler. For instance, the command
 
 ```bash
 kubectl autoscale rs myreplicaset --min=2 --max=5 --cpu-percent=80
 ```
 
-will create an autoscaler for replication set foo, with target CPU utilization set to 80% and the number of replicas between 2 and 5. Kubernetes 1.6 adds support for making use of custom metrics in the Horizontal Pod Autoscaler.
+will create an autoscaler for replication set myreplicaset, with target CPU utilization set to 80% and the number of replicas between 2 and 5. Kubernetes adds support for making use of custom metrics in the Horizontal Pod Autoscaler.
 
-Instead of using the Horizontal Pod Autoscaler directly, we will use **KEDA** (Kubernetes-based Event-driven Autoscaling), an open source component developed by Microsoft and Red Hat to allow any Kubernetes workload to benefit from the event-driven architecture model. It integrates natively with the Horizontal Pod Autoscaler. *KEDA* can use *Prometheus* that will be in charge of getting metrics and other [scalers](https://keda.sh/docs/1.5/scalers/) like GCP Pub/sub, Redis or external sources.
+Instead of using the Horizontal Pod Autoscaler directly, we will use **KEDA** (Kubernetes-based Event-driven Autoscaling), an open source component developed by Microsoft and Red Hat to allow any Kubernetes workload to benefit from the event-driven architecture model. It integrates natively with the Horizontal Pod Autoscaler. *KEDA* can use *Prometheus* that will be in charge of getting metrics and other [scalers](https://keda.sh/docs/1.5/scalers/) like GCP Pub/sub, Redis or external sources like Istio.
 
 KEDA can be deployed as an [operator](https://operatorhub.io/operator/keda). The manifest to autoscale the application can be like:
 
@@ -1619,21 +1628,21 @@ As you notice, some of the functionalities of a service mesh like Istio overlaps
 
 ### 3.2.11 Section _9_. Database and Storage High availability
 
-All the data services in the cloud have their own recovery process and a way to ensure data availability. We are going to cover simple concepts here but the most important is the common sense. As we already discuss with logging, it is key to choose which data to save and understand what adds value to our product.
+All the data services in the cloud have their own recovery process and a way to ensure data availability. We are going to cover simple concepts here. As we already discuss with logging, it is key to choose which data to save and understand what adds value to our product.
 
 For database queries, it is important to define how long we will keep data alive and when unused data will be archived or moved to a cold storage.
 
-It is important to understand also the scenario for our application. If we need data in different zones, the way we replicate and store the data between regions needs to be defined whithin the application or the Database needs to have the active-active option. It is key to understand what data write/read delay have between regions due to network latency.
+It is key to understand the scenario for our specific application. How the data will be replicated between zones, how it will be stored, database and in-memory requirements, etc. We also need to test how data read and write performs between regions due to network latency.
 
 This is a typical HA scenario for a Cloud SQL service:
 
 ![Cloud SQL](ha-config.png)
 
-The same happens for [Redis](https://cloud.google.com/memorystore/docs/redis/high-availability) in this case replicating a primary Redis node to a replica node.
+The same happens for [Redis](https://cloud.google.com/memorystore/docs/redis/high-availability). This is a good example to replicate a primary Redis node to a replica node.
 
 #### 3.2.11.1 Backups
 
-Depending on the technology used it is important to backup the important data and keep the configuration in code as we have been trying to show during the whole Design document.
+Under GCP, there are different backup services, that depends on the database or technology. The recommendation is to program backups with only the core data only, keeping the configuration in code as much as possible.
 
 #### 3.2.11.2 Multicloud
 
@@ -1643,7 +1652,7 @@ This is a cool topic when referring to resiliency and distributed but not when t
 - Cloud Provider lock-in Removal
 - Application and Infrastructure Code Cloud-Agnostic
 
-One of the reasons to use K8S is this. You can connect different clouds and choose the best PaaS options for every component as well as improve the system resilience.
+One of the reasons to use K8S is the possibility of connecting different clouds, choosing the best PaaS options for every component at the time we improve the platform resilience.
 
 ## 4. Conclusion
 
@@ -1657,9 +1666,9 @@ Although there are some big topics not fully covered in this document like:
 - Self-Service for Infrastructure
 - Cost Management
 
-And some others that could be improved, hopefully this document would be a good startup point for ideas and learnings. I think it could be a good base to understand different technologies and ways of working.
+Hopefully this document would be a good startup point for ideas and learnings. I think it could be a good base to understand different technologies and ways of working.
 
-Please don't hesitate to contact me if you find any issue or incorrect idea or any other queries.
+Please don't hesitate to contact if you find any issue or incorrect idea.
 
 ## 5. Project Strategy
 
