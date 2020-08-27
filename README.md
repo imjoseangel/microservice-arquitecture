@@ -200,8 +200,8 @@ The proposed solution intends to standardize all the lines in the Platform and w
 
 - Review if Windows support is needed.
 - Best Practices Documentation.
-- Clear Understanding about The Company Way of Working.
-- Clear Design Documentation and Approvals before starting the implementation.
+- Clear Understanding about The Team Way of Working.
+- Design Documentation Approvals before starting the implementation.
 
 #### Financial
 
