@@ -68,7 +68,7 @@ The content of this project itself is licensed under the Creative Commons Attrib
         - [3.2.2.2.6 Zone redundancy](#32226-zone-redundancy)
       - [3.2.2.3 Terraform. Versioned modules](#3223-terraform-versioned-modules)
       - [3.2.2.4 Other Services](#3224-other-services)
-      - [3.2.2.5 Section _2b_Ansible. Kubernetes Operators. Microservices Deployment](#3225-section-_2b_ansible-kubernetes-operators-microservices-deployment)
+      - [3.2.2.5 Section _2b_ Ansible. Kubernetes Operators. Microservices Deployment](#3225-section-2b-ansible-kubernetes-operators-microservices-deployment)
     - [3.2.3 Section _3_. Testing](#323-section-3-testing)
     - [3.2.3.1 Pre-Commit](#3231-pre-commit)
     - [3.2.3.2 Code Testing and Integration Tests on CI](#3232-code-testing-and-integration-tests-on-ci)
@@ -995,7 +995,7 @@ resource "google_compute_instance" "default" {
 
 The important part is to configure and harden it properly. Here is were the Compliance as Code and Ansible mark the difference. Chef for testing, Ansible to implement it. We will discuss this later in the security section. [GitHub Link](https://github.com/dev-sec)
 
-#### 3.2.2.5 Section _2b_Ansible. Kubernetes Operators. Microservices Deployment
+#### 3.2.2.5 Section _2b_ Ansible. Kubernetes Operators. Microservices Deployment
 
 Ansible is perfect to create K8S operators. A K8S Operator can complete complex tasks in order to achieve the desired changes in the application’s output. It is clear that Operators is the present and the future to manage Kubernetes clusters.
 
