@@ -269,7 +269,7 @@ No constraints have been detected so far.
 
 #### 2.2.3 Dependencies
 
-The current implementation is dependent on the following technologies and providers:
+The current implementation is dependent on the following technologies and providers among others:
 
 - Google Cloud Platform
 - CircleCI
@@ -279,12 +279,13 @@ The current implementation is dependent on the following technologies and provid
 - Terraform
 - Vault
 - Ansible and Molecule
-- SonarQube
 - Chef
 - JMeter
 - Keda
 - Istio
-- Redis Cache
+- Prometheus
+- ELK
+- Grafana
 
 #### 2.2.4 Risks
 
