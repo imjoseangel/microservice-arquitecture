@@ -1,4 +1,4 @@
-# Design Document
+# Microservices - Design Document
 
 ## License
 
@@ -6,7 +6,7 @@ The content of this project itself is licensed under the Creative Commons Attrib
 
 ## Table of Contents
 
-- [Design Document](#design-document)
+- [Microservices - Design Document](#microservices---design-document)
   - [License](#license)
   - [Table of Contents](#table-of-contents)
   - [1. Introduction](#1-introduction)
