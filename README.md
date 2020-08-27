@@ -4,6 +4,98 @@
 
 The content of this project itself is licensed under the Creative Commons Attribution 3.0 Unported license, and the underlying source code used to format and display that content is licensed under the MIT license.
 
+### Table of Contents
+
+- [Design Document](#design-document)
+  - [License](#license)
+    - [Table of Contents](#table-of-contents)
+  - [1. Introduction](#1-introduction)
+    - [1.1 Purpose of the System Design Document (SDD)](#11-purpose-of-the-system-design-document-sdd)
+    - [1.2 Audience](#12-audience)
+    - [1.3 Background](#13-background)
+    - [1.4 Problem statement](#14-problem-statement)
+    - [1.5 Strategic Objectives](#15-strategic-objectives)
+      - [Table 1: Objectives](#table-1-objectives)
+    - [1.6 Project Topics](#16-project-topics)
+      - [1.6.1 Required](#161-required)
+    - [1.7 Related Projects](#17-related-projects)
+    - [1.8 Design Constraints](#18-design-constraints)
+      - [Institutional](#institutional)
+      - [Technical](#technical)
+      - [Financial](#financial)
+    - [1.9 Future Contingencies](#19-future-contingencies)
+  - [2. Design Guidelines](#2-design-guidelines)
+    - [2.1 Stakeholder Roles/Responsibilities/Concerns](#21-stakeholder-rolesresponsibilitiesconcerns)
+      - [2.1.1 Technical / Project Stakeholders](#211-technical--project-stakeholders)
+        - [Table 2: Project members contact information](#table-2-project-members-contact-information)
+      - [2.1.2 Roles](#212-roles)
+      - [2.1.3 Responsibilities](#213-responsibilities)
+      - [2.1.4 Concerns](#214-concerns)
+    - [2.2 Design Considerations](#22-design-considerations)
+      - [2.2.1 Assumptions](#221-assumptions)
+      - [2.2.2 Constraints](#222-constraints)
+      - [2.2.3 Dependencies](#223-dependencies)
+      - [2.2.4 Risks](#224-risks)
+  - [3. Architecture](#3-architecture)
+    - [3.1 High Level Flow Diagrams](#31-high-level-flow-diagrams)
+      - [Components View](#components-view)
+  - [3.2 Sections](#32-sections)
+    - [3.2.1 Section _1_. GitHub and Code Organization](#321-section-1-github-and-code-organization)
+    - [3.2.1.1 Important files and directories](#3211-important-files-and-directories)
+      - [3.2.1.1.1 `.devcontainer` directory](#32111-devcontainer-directory)
+      - [3.2.1.1.2 `.editorconfig`](#32112-editorconfig)
+      - [3.2.1.1.3 `.gitattributes`](#32113-gitattributes)
+      - [3.2.1.1.4 `.gitignore`](#32114-gitignore)
+      - [3.2.1.1.5 `.pre-commit-config.yaml`](#32115-pre-commit-configyaml)
+      - [3.2.1.1.6 `.github` directory](#32116-github-directory)
+    - [3.2.1.2 Branching Strategy](#3212-branching-strategy)
+    - [3.2.1.3 Infrastructure Automation - Terraform and Ansible Git Structure](#3213-infrastructure-automation---terraform-and-ansible-git-structure)
+      - [Envs repository](#envs-repository)
+      - [Modules Repository](#modules-repository)
+      - [Envs and Playbooks repository](#envs-and-playbooks-repository)
+    - [Roles repository](#roles-repository)
+    - [3.2.1.4 Compliance as Code - Chef Git Structure](#3214-compliance-as-code---chef-git-structure)
+    - [3.2.1.5 Python, Go, Ruby and Shell scripting](#3215-python-go-ruby-and-shell-scripting)
+    - [3.2.2 Section _2_. Platform automation](#322-section-2-platform-automation)
+      - [3.2.2.1 Terraform and Ansible](#3221-terraform-and-ansible)
+      - [3.2.2.1.1 A tool for a specific purpose](#32211-a-tool-for-a-specific-purpose)
+      - [3.2.2.2 Terraform. How to deploy the solution](#3222-terraform-how-to-deploy-the-solution)
+        - [3.2.2.2.1 Sensitive Variables export](#32221-sensitive-variables-export)
+        - [3.2.2.2.2 Backend Configuration](#32222-backend-configuration)
+        - [3.2.2.2.3 Project Creation](#32223-project-creation)
+        - [3.2.2.2.4 GKE Deployment](#32224-gke-deployment)
+        - [3.2.2.2.5 Connectivity](#32225-connectivity)
+        - [3.2.2.2.6 Zone redundancy](#32226-zone-redundancy)
+      - [3.2.2.3 Terraform. Versioned modules](#3223-terraform-versioned-modules)
+      - [3.2.2.4 Other Services](#3224-other-services)
+      - [3.2.2.5 Section _2b_Ansible. Kubernetes Operators. Microservices Deployment](#3225-section-_2b_ansible-kubernetes-operators-microservices-deployment)
+    - [3.2.3 Section _3_. Testing](#323-section-3-testing)
+    - [3.2.3.1 Pre-Commit](#3231-pre-commit)
+    - [3.2.3.2 Code Testing and Integration Tests on CI](#3232-code-testing-and-integration-tests-on-ci)
+    - [3.2.3.3 Performance Testing](#3233-performance-testing)
+    - [3.2.3.3.1 Operator SDK Testing](#32331-operator-sdk-testing)
+    - [3.2.3.3.2 JMeter Testing and API Mocking](#32332-jmeter-testing-and-api-mocking)
+    - [3.2.3.4 Resilience Testing](#3234-resilience-testing)
+    - [3.2.4 Section _4a_. Code and CI/CD Security](#324-section-4a-code-and-cicd-security)
+      - [3.2.4.1 Code Security - SAST, SCA and CVA](#3241-code-security---sast-sca-and-cva)
+      - [3.2.4.2 Compliance as Code](#3242-compliance-as-code)
+    - [3.2.5 Section _4b_. Passwords and Certificates Security](#325-section-4b-passwords-and-certificates-security)
+    - [3.2.6 Section _4c_. WAF and Security Audit - Armor](#326-section-4c-waf-and-security-audit---armor)
+    - [3.2.7 Section _5_. Continuous Integration and Deployment](#327-section-5-continuous-integration-and-deployment)
+    - [3.2.8 Section _6_. Logging, Metrics and Traceability](#328-section-6-logging-metrics-and-traceability)
+    - [3.2.8.1 Google Cloud Operations (Stackdriver)](#3281-google-cloud-operations-stackdriver)
+      - [3.2.8.1.1 Log Definition and Best Practices](#32811-log-definition-and-best-practices)
+      - [3.2.8.2 K8S Health Checks and Metrics](#3282-k8s-health-checks-and-metrics)
+    - [3.2.9 Section _7_. Event-Driven autoscaling - KEDA](#329-section-7-event-driven-autoscaling---keda)
+      - [3.2.9.1 Kubernetes Cluster Autoscaling](#3291-kubernetes-cluster-autoscaling)
+    - [3.2.10 Section _8_. Microservices Fault Tolerance - Istio](#3210-section-8-microservices-fault-tolerance---istio)
+    - [3.2.11 Section _9_. Database and Storage High availability](#3211-section-9-database-and-storage-high-availability)
+      - [3.2.11.1 Backups](#32111-backups)
+      - [3.2.11.2 Multicloud](#32112-multicloud)
+  - [4. Conclusion](#4-conclusion)
+  - [5. Project Strategy](#5-project-strategy)
+    - [5.1 Key Milestones and Deliverables](#51-key-milestones-and-deliverables)
+
 ## 1. Introduction
 
 **Project Name:** Microservice Architecture
@@ -197,7 +289,7 @@ The current implementation is dependent on the following technologies and provid
 * Istio
 * Redis Cache
 
-#### 2.2.3 Risks
+#### 2.2.4 Risks
 
 Minimal risk is associated with the system design. This is primarily due to the fact that the current and architecture will not be modified to meet the needs of the proposed solution. New features and solutions can be implemented without breaking current implementations.
 
@@ -898,7 +990,7 @@ resource "google_compute_instance" "default" {
 
 The important part is to configure and harden it properly. Here is were the Compliance as Code and Ansible mark the difference. Chef for testing, Ansible to implement it. We will discuss this later in the security section. [GitHub Link](https://github.com/dev-sec)
 
-#### 3.2.2.3 Section _2b_Ansible. Kubernetes Operators. Microservices Deployment
+#### 3.2.2.5 Section _2b_Ansible. Kubernetes Operators. Microservices Deployment
 
 Ansible is perfect to create operators to be deployed. A K8S Operator can complete complex tasks in order to achieve the desired changes in the application’s output. It is clear that Operators is the present and the future to manage Kubernetes clusters.
 
@@ -1524,13 +1616,46 @@ Istio not only adds fault tolerance to the equation, also is capable of doing:
 
 As you notice, some of the functionalities of a service mesh like Istio overlaps with some technologies already referred in this document. The important point is using the right technology to give value and stability to the product and make the most of all of them togeter (KEDA and Istio) for scalability. A very good introduction to Istio can be found [here](https://learn.openshift.com/servicemesh/).
 
-### 3.2.11 Section _9_. Microservices Fault Tolerance - Istio
+### 3.2.11 Section _9_. Database and Storage High availability
 
+All the data services in the cloud have their own recovery process and a way to ensure data availability. We are going to cover simple concepts here but the most important is the common sense. As we already discuss with logging, it is key to choose which data to save and understand what adds value to our product.
 
+For database queries, it is important to define how long we will keep data alive and when unused data will be archived or moved to a cold storage.
 
-## 4. Project Strategy
+It is important to understand also the scenario for our application. If we need data in different zones, the way we replicate and store the data between regions needs to be defined whithin the application or the Database needs to have the active-active option. It is key to understand what data write/read delay have between regions due to network latency.
 
-### 4.1 Key Milestones and Deliverables
+This is a typical HA scenario for a Cloud SQL service:
+
+![Cloud SQL](ha-config.png)
+
+The same happens for [Redis](https://cloud.google.com/memorystore/docs/redis/high-availability) in this case replicating a primary Redis node to a replica node.
+
+#### 3.2.11.1 Backups
+
+Depending on the technology used it is important to backup the important data and keep the configuration in code as we have been trying to show during the whole Design document.
+
+#### 3.2.11.2 Multicloud
+
+This is a cool topic when referring to resiliency and distributed but not when talking about billing. Having a multicloud option provides the following advantages among others:
+
+* Improved Multizone
+* Cloud Provider lock-in Removal
+* Application and Infrastructure Code Cloud-Agnostic
+
+One of the reasons to use K8S is this. You can connect different clouds and choose the best PaaS options for every component as well as improve the system resilience.
+
+## 4. Conclusion
+
+There are many uncovered topics in this document:
+
+* RBAC
+* POD and Container Security
+* API Gateway
+* Networking
+
+## 5. Project Strategy
+
+### 5.1 Key Milestones and Deliverables
 
 | Event / Milestone   | Deliverable     | Timing   |
 |---------------------|-----------------|----------|
