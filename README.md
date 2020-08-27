@@ -209,10 +209,15 @@ There will be different proposals to adjust the solution PAAS vs IAAS custom sol
 
 ### 1.9 Future Contingencies
 
-We have different dependencies for this project and some are critical to the security the Framework.
+We have different dependencies for this project and some are critical to the security the Framework, defined under the [Conclusion Section](#4-conclusion).
 
-- Password Management
-- Good Knowledge of Variables and Patterns to avoid code repetition (Documentation and Best Practices)
+- Oauth and RBAC Definition and implementation
+- POD and Container Security Definition
+- API Gateway Definition
+- Networking Definition
+- Cache Management
+- Self-Service for Infrastructure
+- Cost Management
 
 ## 2. Design Guidelines
 
@@ -251,7 +256,7 @@ The following table provides the role and contact information for the key techni
 
 #### 2.1.4 Concerns
 
-The solution will be very generic and focused on **GCP** as the default Cloud provider.
+The solution will cover the most important topics and will be focused on **GCP** as the default Cloud provider.
 
 ### 2.2 Design Considerations
 
