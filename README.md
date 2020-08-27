@@ -586,7 +586,7 @@ Keep as much consistency as possible. Create an environment following the projec
 - Ansible -> Python
 - Chef and Inspec -> Ruby
 
-Using Python as default will give us the possibility to use tools like pre-commit. Also python is by default in all the *nix Systems, so it it easier to run. Programming small scripts in bash when needed is perfect (Docker entrypoints, pre-commit hooks, etc), but we need to be sure that is compatible with other shells like `zsh` or `ksh`.
+Using Python as the default programming language will open the possibility to use tools like pre-commit. Python is by default in all the *nix Systems, so it it easier to prepare. Programming small scripts in bash when needed is also a perfect option (Docker entrypoints, pre-commit hooks, etc), but we need to be sure that is compatible with other shells like `zsh` or `ksh`.
 
 If needed remember that Powershell is also an option and mostly when talking about Windows environments.
 
