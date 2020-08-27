@@ -437,7 +437,7 @@ An example of every file can be found at [GitHub](https://github.com/imjoseangel
 
 ### 3.2.1.2 Branching Strategy
 
-To improve team collaboration, quality and fast deployments, the best Branching strategy is *Trunk Based Development* or *GitHub Flow* (Don't confuse with *Git Flow*) alternative that adds different mechanism to the release process but keeps the soul of the *Trunk Based*.
+To improve team collaboration, quality and fast deployments, the best Branching strategy is *Trunk Based Development* or *GitHub Flow* (not to be confused with *Git Flow*) alternative that adds different mechanism to the release process but keeps the soul of the *Trunk Based*.
 
 Besides all the advantages from the *Trunk Based*, the *GitHub Flow* will help developers to understand and collaborate more actively with Open Source and learn techniques to apply to the platform.
 
@@ -559,7 +559,7 @@ A repository is needed with the following structure:
 
 ### 3.2.1.4 Compliance as Code - Chef Git Structure
 
-Simple, the recommendation is to keep the structure given by [dev-sec](https://github.com/dev-sec). For internal developments, we should keep the same.
+The recommendation is to keep the structure given by [dev-sec](https://github.com/dev-sec). For internal developments, we should maintain the same structure.
 
 We can keep different environments, but initially better to have a common one.
 
@@ -580,7 +580,7 @@ We can keep different environments, but initially better to have a common one.
 
 ### 3.2.1.5 Python, Go, Ruby and Shell scripting
 
-The recommendation is to keep as much consistency as possible and keep every tool with their code base to have clear testing processes and avoid long testing processes. Also it is important to have a collaboration mind and maintain the community with fixes directly to the main projects (Terraform, Ansible, Dev-Sec, etc).
+Keep as much consistency as possible and maintain every tool with their code base to have clear testing processes and avoid long ones. This is key to have a collaboration mind and be able to improve the code directly with the projects (Terraform, Ansible, Dev-Sec, etc).
 
 - Terraform -> Go
 - Ansible -> Python
