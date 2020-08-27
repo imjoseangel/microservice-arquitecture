@@ -580,7 +580,7 @@ We can keep different environments, but initially better to have a common one.
 
 ### 3.2.1.5 Python, Go, Ruby and Shell scripting
 
-Keep as much consistency as possible and maintain every tool with their code base to have clear testing processes and avoid long ones. This is key to have a collaboration mind and be able to improve the code directly with the projects (Terraform, Ansible, Dev-Sec, etc).
+Keep as much consistency as possible. Create an environment following the project best practices and creating a collaboration environment. Try to impulse these best practices and consistency to be able to collaborate directly with the projects (Terraform, Ansible, Dev-Sec, etc).
 
 - Terraform -> Go
 - Ansible -> Python
