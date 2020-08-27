@@ -1439,7 +1439,7 @@ In the presented architecture, there are two flavours when talking about metrics
 
 Also we can add the [Zabbix](https://grafana.com/grafana/plugins/alexanderzobnin-zabbix-app) plugin to integrate the core metrics from Zabbix with the ones comming from Kubernetes.
 
-**Fluentd** is an open-source data collector for unified logging layers. It uses a *DaemonSet* that ensures that all (or some) Nodes run a copy of a Pod. As nodes are added to the cluster, Pods are added to them. As nodes are removed from the cluster, those Pods are garbage collected. 
+**Fluentd** is an open-source data collector for unified logging layers. It uses a *DaemonSet* that ensures that all (or some) Nodes run a copy of a Pod. As nodes are added to the cluster, Pods are added to them. As nodes are removed from the cluster, those Pods are garbage collected.
 
 Together with **ELK** (Elasticsearch, Logstash, and Kibana). All the log messages generated as some sort of event and stream it into a single storage ordered by timestamp. This channeling of logs/messages/texts is done by Logstash. These messages/texts are now fed into Elastic clusters. Elastic Clusters mainly do something called ‘reverse indexing’. All the messages are stored as a document and are indexed using the words, phrases. Kibana acts as the front end UI for the whole stack providing an interface where you can query for messages using a specified query language, generate charts/visualizations and so on.
 
@@ -1646,12 +1646,16 @@ One of the reasons to use K8S is this. You can connect different clouds and choo
 
 ## 4. Conclusion
 
-There are many uncovered topics in this document:
+There are many uncovered big topics in this document:
 
 * RBAC
 * POD and Container Security
 * API Gateway
 * Networking
+
+And some others that could be improved. Hopefully this document would be a good startup point for ideas and learnings as well as a good base to understand different technologies and ways of working.
+
+Please don't hesitate to contact me for ammends, issues or any other queries.
 
 ## 5. Project Strategy
 
