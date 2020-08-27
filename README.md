@@ -1642,7 +1642,7 @@ The same happens for [Redis](https://cloud.google.com/memorystore/docs/redis/hig
 
 #### 3.2.11.1 Backups
 
-Under GCP, there are different backup services, that depends on the database or technology. The recommendation is to program backups with only the core data only, keeping the configuration in code as much as possible.
+Under GCP, there are different backup services that depends on the database or technology. The recommendation is to program backups with only the core data only, keeping the configuration in code as much as possible.
 
 #### 3.2.11.2 Multicloud
 
